@@ -1,8 +1,6 @@
 import { Telegraf } from "telegraf";
 import type { Context } from "telegraf";
 import * as chrono from "chrono-node";
-import { Markup } from "telegraf";
-import { Message } from "../../Library/Caches/deno/npm/registry.npmjs.org/@telegraf/types/7.1.0/message.d.ts";
 
 class Bot {
   bot: Telegraf;
@@ -47,11 +45,7 @@ class Bot {
               responseType: "notUnderstood",
             });
           } // * we have a date
-          else {
-            await ctx.reply(`countdown registered ${end}`);
-
-            this.startCountdown({ ctx, end });
-          }
+          else this.startCountdown({ ctx, end });
         }
       },
     );
@@ -72,6 +66,8 @@ class Bot {
       });
       return;
     } else {
+      await ctx.reply(`countdown registered ${end}`);
+
       const diffString = this.getDurationString(firstDiff);
       const msg = await ctx.reply(`${diffString} left`);
       this.bot.telegram.pinChatMessage(msg.chat.id, msg.message_id);
