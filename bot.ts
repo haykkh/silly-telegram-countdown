@@ -14,10 +14,6 @@ class Bot {
 
     this.bot = new Telegraf(token);
 
-    this.bot.on(
-      "sticker",
-      (ctx) => ctx.reply(ctx.message.sticker.file_id),
-    );
     this.registerCountdown();
 
     this.bot.launch();
