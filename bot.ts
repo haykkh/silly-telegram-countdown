@@ -24,11 +24,25 @@ class Bot {
     this.bot.command(
       "countdown",
       async (ctx) => {
-        const extra = ctx.message.text.split(" ").slice(1).join(" ");
-        await ctx.reply(`countdown registered ${extra}`);
+        const args = ctx.message.text.split(" ").slice(1);
+
+        if (!args.length) {
+          await ctx.replyWithMarkdownV2(`__${this.getSnarkyResponse()}__`);
+        } else await ctx.reply(`countdown registered ${args}`);
       },
     );
   };
+
+  private getSnarkyResponse = (): string =>
+    snarkyResponses[Math.floor(Math.random() * snarkyResponses.length)];
 }
+
+const snarkyResponses = [
+  "i can't count down to nothing bro",
+  "i'm not a mind reader bro",
+  "bro i'm not a fortune teller",
+  "countdown to what bro",
+  "whatever bro",
+];
 
 export default Bot;
