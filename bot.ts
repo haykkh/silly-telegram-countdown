@@ -23,7 +23,10 @@ class Bot {
   private registerCountdown = () => {
     this.bot.command(
       "countdown",
-      Telegraf.reply("countdown registered"),
+      async (ctx) => {
+        const extra = ctx.message.text.split(" ").slice(1).join(" ");
+        await ctx.reply(`countdown registered ${extra}`);
+      },
     );
   };
 }
