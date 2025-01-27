@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "dev": "deno run --unstable-temporal --allow-env --allow-net --allow-read --watch main.ts"
   },
   "imports": {
     "telegraf": "npm:telegraf@^4.16.3"
