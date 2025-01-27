@@ -41,16 +41,16 @@ class Bot {
               responseType: "notUnderstood",
             });
           } // * we have a date
-          else this.startCountdown({ ctx, end });
+          else this.startCountdown({ ctx, end, originalArgs: args });
         }
       },
     );
   };
 
   private startCountdown = async (
-    args: { ctx: Context; end: Temporal.Instant },
+    args: { ctx: Context; end: Temporal.Instant; originalArgs: string },
   ) => {
-    const { ctx, end } = args;
+    const { ctx, end, originalArgs } = args;
 
     const firstDiff = this.getDifference(end);
 
@@ -62,7 +62,9 @@ class Bot {
       });
       return;
     } else {
-      const registrationMsg = await ctx.reply(`countdown registered ${end}`);
+      const registrationMsg = await ctx.reply(
+        `countdown registered ${originalArgs} (${end})`,
+      );
 
       const diffString = this.getDurationString(firstDiff);
       const msg = await ctx.reply(`${diffString} left`);
