@@ -16,6 +16,10 @@ class Bot {
 
     this.bot = new Telegraf(token);
 
+    this.bot.on(
+      "sticker",
+      (ctx) => ctx.reply(ctx.message.sticker.file_id),
+    );
     this.registerCountdown();
 
     this.bot.launch();
@@ -44,46 +48,65 @@ class Bot {
             });
           } // * we have a date
           else {
-            const firstDiff = this.getDifference(end);
+            await ctx.reply(`countdown registered ${end}`);
 
-            if (firstDiff.seconds < 0) {
-              // * date in the past
-              await this.sendSnarkyResponse({
-                ctx,
-                responseType: "dateInThePast",
-              });
-            } else {
-              // * date in the future yay let's go
-
-              const msg = await ctx.reply(`countdown registered ${end}`);
-              this.bot.telegram.pinChatMessage(msg.chat.id, msg.message_id);
-
-              this.startCountdown(msg, end);
-            }
+            this.startCountdown({ ctx, end });
           }
         }
       },
     );
   };
 
-  private startCountdown = (msg: Message, end: Temporal.Instant) => {
-    const intervalId = setInterval(() => {
-      const diff = this.getDifference(end);
+  private startCountdown = async (
+    args: { ctx: Context; end: Temporal.Instant },
+  ) => {
+    const { ctx, end } = args;
 
-      if (diff.seconds <= 0) {
-        clearInterval(intervalId);
-        return;
-      }
+    const firstDiff = this.getDifference(end);
 
-      const diffString = this.getDurationString(diff);
+    if (firstDiff.seconds < 0) {
+      // * date in the past
+      await this.sendSnarkyResponse({
+        ctx,
+        responseType: "dateInThePast",
+      });
+      return;
+    } else {
+      const diffString = this.getDurationString(firstDiff);
+      const msg = await ctx.reply(`${diffString} left`);
+      this.bot.telegram.pinChatMessage(msg.chat.id, msg.message_id);
 
-      this.bot.telegram.editMessageText(
-        msg.chat.id,
-        msg.message_id,
-        undefined,
-        `${diffString} left`,
-      );
-    }, 1000);
+      const intervalId = setInterval(() => {
+        const diff = this.getDifference(end);
+
+        if (diff.seconds <= 0) {
+          this.bot.telegram.editMessageText(
+            msg.chat.id,
+            msg.message_id,
+            undefined,
+            "countdown complete",
+          );
+
+          this.bot.telegram.sendMessage(msg.chat.id, "countdown complete");
+          this.bot.telegram.sendSticker(
+            msg.chat.id,
+            "CAACAgUAAxkBAAIBEmeXoMso2oQyDcOg7cYl4EJhoAuxAAK_BgACzMbiAl-TAWfX41r4NgQ",
+          );
+
+          clearInterval(intervalId);
+          return;
+        }
+
+        const diffString = this.getDurationString(diff);
+
+        this.bot.telegram.editMessageText(
+          msg.chat.id,
+          msg.message_id,
+          undefined,
+          `${diffString} left`,
+        );
+      }, 1000);
+    }
   };
 
   private getDifference = (end: Temporal.Instant) => {
