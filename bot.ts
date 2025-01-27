@@ -102,7 +102,7 @@ class Bot {
           undefined,
           `${diffString} left`,
         );
-      }, 1000);
+      }, 10000);
     }
   };
 
