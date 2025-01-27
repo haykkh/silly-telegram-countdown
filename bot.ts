@@ -1,5 +1,4 @@
 import { Telegraf } from "telegraf";
-import { message } from "telegraf/filters";
 
 class Bot {
   bot: Telegraf;
@@ -13,15 +12,20 @@ class Bot {
 
     this.bot = new Telegraf(token);
 
-    this.bot.start((ctx) => ctx.reply("Welcome"));
-    this.bot.help((ctx) => ctx.reply("Send me a sticker"));
-    this.bot.on(message("sticker"), (ctx) => ctx.reply("👍"));
-    this.bot.hears("hi", (ctx) => ctx.reply("hey there"));
+    this.registerCountdown();
+
     this.bot.launch();
 
     Deno.addSignalListener("SIGINT", () => this.bot.stop("SIGINT"));
     Deno.addSignalListener("SIGTERM", () => this.bot.stop("SIGTERM"));
   }
+
+  private registerCountdown = () => {
+    this.bot.command(
+      "countdown",
+      async (ctx) => await ctx.reply("countdown registered"),
+    );
+  };
 }
 
 export default Bot;
