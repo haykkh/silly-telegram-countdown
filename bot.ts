@@ -62,7 +62,7 @@ class Bot {
       });
       return;
     } else {
-      await ctx.reply(`countdown registered ${end}`);
+      const registrationMsg = await ctx.reply(`countdown registered ${end}`);
 
       const diffString = this.getDurationString(firstDiff);
       const msg = await ctx.reply(`${diffString} left`);
@@ -79,7 +79,10 @@ class Bot {
             "countdown complete",
           );
 
-          this.bot.telegram.sendMessage(msg.chat.id, "countdown complete");
+          this.bot.telegram.sendMessage(msg.chat.id, "countdown complete", {
+            reply_parameters: { message_id: registrationMsg.message_id },
+          });
+
           this.bot.telegram.sendSticker(
             msg.chat.id,
             "CAACAgUAAxkBAAIBEmeXoMso2oQyDcOg7cYl4EJhoAuxAAK_BgACzMbiAl-TAWfX41r4NgQ",
