@@ -23,7 +23,7 @@ class Bot {
   private registerCountdown = () => {
     this.bot.command(
       "countdown",
-      async (ctx) => await ctx.reply("countdown registered"),
+      Telegraf.reply("countdown registered"),
     );
   };
 }
