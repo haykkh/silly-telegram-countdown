@@ -1,5 +1,8 @@
 {
   "tasks": {
     "dev": "deno run --watch main.ts"
+  },
+  "imports": {
+    "telegraf": "npm:telegraf@^4.16.3"
   }
 }

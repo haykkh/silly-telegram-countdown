@@ -1,3 +1,5 @@
+import Bot from "./bot.ts";
+
 if (import.meta.main) {
-  console.log("hello denoworld");
+  new Bot();
 }
