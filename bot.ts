@@ -42,12 +42,24 @@ class Bot {
               ctx,
               responseType: "notUnderstood",
             });
-          } // * yay we have a date
+          } // * we have a date
           else {
-            const msg = await ctx.reply(`countdown registered ${end}`);
-            this.bot.telegram.pinChatMessage(msg.chat.id, msg.message_id);
+            const firstDiff = this.getDifference(end);
 
-            this.startCountdown(msg, end);
+            if (firstDiff.seconds < 0) {
+              // * date in the past
+              await this.sendSnarkyResponse({
+                ctx,
+                responseType: "dateInThePast",
+              });
+            } else {
+              // * date in the future yay let's go
+
+              const msg = await ctx.reply(`countdown registered ${end}`);
+              this.bot.telegram.pinChatMessage(msg.chat.id, msg.message_id);
+
+              this.startCountdown(msg, end);
+            }
           }
         }
       },
@@ -81,7 +93,7 @@ class Bot {
   };
 
   private getDurationString = (duration: Temporal.Duration) => {
-    const totalSeconds = duration.total("seconds");
+    const totalSeconds = duration.seconds;
     const years = Math.floor(totalSeconds / (365 * 24 * 60 * 60));
     const months = Math.floor(
       (totalSeconds % (365 * 24 * 60 * 60)) / (30 * 24 * 60 * 60),
@@ -136,6 +148,9 @@ const snarkyResponses = {
     "it says countdown bro",
     "SOMETHING TEMPORAL DUDE",
     "DATE TIME DATE TIME DATE TIME",
+  ],
+  dateInThePast: [
+    "bro how imma posed to countdown to the past",
   ],
 } as const;
 
