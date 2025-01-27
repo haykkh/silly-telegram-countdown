@@ -3,6 +3,7 @@
     "dev": "deno run --unstable-temporal --allow-env --allow-net --allow-read --watch main.ts"
   },
   "imports": {
+    "chrono-node": "npm:chrono-node@^2.7.8",
     "telegraf": "npm:telegraf@^4.16.3"
   }
 }

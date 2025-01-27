@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "npm:chrono-node@^2.7.8": "2.7.8",
     "npm:telegraf@^4.16.3": "4.16.3"
   },
   "npm": {
@@ -25,6 +26,15 @@
     },
     "buffer-fill@1.0.0": {
       "integrity": "sha512-T7zexNBwiiaCOGDg9xNX9PBmjrubblRkENuptryuI64URkXDFum9il/JGL8Lm8wYfAXpredVXXZz7eMHilimiQ=="
+    },
+    "chrono-node@2.7.8": {
+      "integrity": "sha512-pzxemrTKu6jFVyAfkNxUckp9nlrmRFtr5lGrEJcVKyeKV9WSeGT78Oysazlzd/H0BdMv7EzACtJrw0pi2KODBQ==",
+      "dependencies": [
+        "dayjs"
+      ]
+    },
+    "dayjs@1.11.13": {
+      "integrity": "sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg=="
     },
     "debug@4.4.0": {
       "integrity": "sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==",
@@ -88,6 +98,7 @@
   },
   "workspace": {
     "dependencies": [
+      "npm:chrono-node@^2.7.8",
       "npm:telegraf@^4.16.3"
     ]
   }
